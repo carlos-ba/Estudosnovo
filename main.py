@@ -1,9 +1,12 @@
-# Lendo as duas variáveis do usuário
-primeira_variavel = input("Digite o primeiro valor: ")
-segunda_variavel = input("Digite o segundo valor: ")
+import streamlit as st
 
-# Juntando (concatenando) as variáveis
-resultado = primeira_variavel + segunda_variavel
+st.title("Programa de Concatenação")
 
-# Imprimindo o resultado
-print("O resultado da junção é:", resultado)
+# Campos de entrada
+primeira_variavel = st.text_input("Digite o primeiro valor:")
+segunda_variavel = st.text_input("Digite o segundo valor:")
+
+# Botão para executar
+if st.button("Juntar"):
+    resultado = primeira_variavel + segunda_variavel
+    st.success(f"O resultado da junção é: {resultado}")
