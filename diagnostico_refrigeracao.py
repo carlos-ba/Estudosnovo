@@ -2,6 +2,7 @@ import streamlit as st
 from openai import OpenAI
 from typing import Dict, Any
 
+
 # Configuração da API OpenAI usando apenas secrets do Streamlit
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
@@ -14,8 +15,9 @@ st.set_page_config(
     layout="wide"
 )
 
-# Configuração da API OpenAI
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Configuração da API OpenAI usando secrets
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+
 
 
 def criar_prompt_sistema() -> str:
