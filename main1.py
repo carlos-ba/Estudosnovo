@@ -1,5 +1,5 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 from typing import Dict, Any
 import os
 from dotenv import load_dotenv
@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # Configuração da API OpenAI
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 def criar_prompt_sistema() -> str:
@@ -29,8 +29,9 @@ def criar_prompt_sistema() -> str:
 
 def obter_resposta_gpt(descricao: str) -> Dict[str, Any]:
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-4",
+        response = client.chat.completions.create(
+            # Mudando para gpt-3.5-turbo
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": criar_prompt_sistema()},
                 {"role": "user", "content": descricao}
@@ -38,7 +39,7 @@ def obter_resposta_gpt(descricao: str) -> Dict[str, Any]:
             temperature=0.7,
             max_tokens=500
         )
-        return response
+        return response.choices[0].message.content
     except Exception as e:
         st.error(f"Erro ao processar a solicitação: {str(e)}")
         return None
@@ -70,7 +71,7 @@ def main():
                 st.success("Análise concluída!")
                 with st.container():
                     st.markdown("### 📋 Diagnóstico Técnico:")
-                    st.markdown(response['choices'][0]['message']['content'])
+                    st.markdown(response)
 
     elif analisar and not descricao:
         st.warning("Por favor, descreva o problema antes de solicitar a análise.")
